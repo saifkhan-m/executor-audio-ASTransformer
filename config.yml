@@ -1,0 +1,4 @@
+jtype: executor-audio-ASTransformer
+metas:
+  py_modules:
+    - ast_encoder.py
