@@ -1,2 +1,7 @@
 manifest_version: 1
-name: executor-audio-ASTransformer
+name: ASTransformer_encoder
+alias: ASTransformer_encoder
+description: Executor that implements Audio Spectral Transformer(AST)
+author: Mohd Saif Khan (khansaifmohd93@gmail.com)
+url: https://github.com/saifkhan-m/executor-audio-ASTransformer.git
+keywords: [encoder, Audio, Transformer]

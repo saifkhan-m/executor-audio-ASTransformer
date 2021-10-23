@@ -1,16 +1,14 @@
 from collections import Iterable
 
 from jina import Executor, DocumentArray, requests
-
 from  ast_exec.ast_models import ASTModel
 import ast_exec.ast_params as params
-import torch
 from ast_exec.ast_input import *
 
 class ASTransformer_encoder(Executor):
 
     def __init__(self,
-                 total_labels,
+                 total_labels=527,
                  input_target_dim: int = 1024,
                  dataset_mean_std: list=[-4.2677393, 4.5689974],
                  model_path: str = None,
@@ -30,9 +28,11 @@ class ASTransformer_encoder(Executor):
                                       input_tdim=self.input_target_dim, imagenet_pretrain=params.IMAGENET_PRETRAIN,
                                       audioset_pretrain=params.AUDIOSET_PRETRAIN, model_size=params.MODEL_SIZE)
         if self.path:
+            print(f'Model Path: {path}')
             sd = torch.load(path, map_location=device)
             audio_model = torch.nn.DataParallel(audio_model)
             audio_model.load_state_dict(sd)
+        print(f'Model Path After: {path}')
         audio_model.eval()
         audio_model.to(device)
         print("model loaded")
@@ -40,7 +40,7 @@ class ASTransformer_encoder(Executor):
 
 
     @requests
-    def m_out(self, docs: DocumentArray, **kwargs):
+    def encode(self, docs: DocumentArray, **kwargs):
         """
                Compute embeddings and store them in the `docs` array.
 
@@ -63,6 +63,7 @@ class ASTransformer_encoder(Executor):
             with torch.no_grad():
                 pred, embedding = self.model(input)
             # output should be in shape [10, 50], i.e., 10 samples, each with prediction of 50 classes.
-
+            sm = torch.nn.Softmax(dim=-1)
+            pred=  pred.argmax()
             d.tags['prediction']= pred.tolist()
             d.embedding = embedding.numpy()
