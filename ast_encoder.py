@@ -8,9 +8,9 @@ from ast_exec.ast_input import *
 class ASTransformer_encoder(Executor):
 
     def __init__(self,
-                 total_labels=527,
+                 total_labels: int = 527,
                  input_target_dim: int = 1024,
-                 dataset_mean_std: list=[-4.2677393, 4.5689974],
+                 dataset_mean_std: list =[-4.2677393, 4.5689974],
                  model_path: str = None,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -22,6 +22,11 @@ class ASTransformer_encoder(Executor):
         self.std=dataset_mean_std[1]
 
     def get_model(self, path):
+        """
+        Lood the AST model in the memory
+        :param path: path to the model
+        :return: AST model
+        """
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         audio_model = ASTModel(label_dim=self.total_labels, fstride=params.FSTRIDE, tstride=params.TSTRIDE, input_fdim=params.INPUT_FDIM,
@@ -45,9 +50,8 @@ class ASTransformer_encoder(Executor):
                Compute embeddings and store them in the `docs` array.
 
                :param docs: documents sent to the encoder. The docs must have `text`.
-                   By default, the input `text` must be a `list` of `str`.
-               :param parameters: dictionary to define the `traversal_paths` and the `batch_size`. For example,
-                      `parameters={'traversal_paths': ['r'], 'batch_size': 10}`.
+                   By default, the input tags of the document must contain a key 'filename' that should contain
+                   the full name of the audio file.
                :param kwargs: Additional key value arguments.
                :return:
                """

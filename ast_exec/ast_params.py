@@ -1,3 +1,7 @@
+"""Global parameters for the AST model.
+
+See ast_models.py for more information.
+"""
 FSTRIDE=10
 TSTRIDE=10
 INPUT_FDIM=128
