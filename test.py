@@ -1,8 +1,7 @@
 import os
 
-from ast_encoder import ASTransformer_encoder
-from jina import Flow, Document, DocumentArray
-import torch
+from executor import ASTransformer_encoder
+from jina import Document, DocumentArray
 
 conf = ASTransformer_encoder(527,100)
 #test_input = torch.rand([10, 100, 128])
@@ -17,6 +16,6 @@ doc = DocumentArray([Document(text=filename)])
 doc = DocumentArray([Document(tags={'filename':filename} )])
 
 
-conf.m_out(doc)
+conf.encode(doc)
 for d in doc:
-    print(d)
+    print(d.embedding)
