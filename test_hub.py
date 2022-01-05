@@ -14,4 +14,4 @@ doc = DocumentArray([Document(tags={'filename': filename})])
 
 with f:
     responses = f.post(on='index', inputs=doc, return_results=True)
-    print(responses)
+    print(responses[0].docs[0].embedding)

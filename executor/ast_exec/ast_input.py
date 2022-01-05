@@ -1,7 +1,8 @@
-import torchaudio
 import torch
 import torch.nn.functional
-import ast_exec.ast_params as ast_params
+import torchaudio
+
+from . import ast_params as ast_params
 
 
 def _wav2fbank(filename, target_length):
